@@ -1,5 +1,14 @@
 {
     "compilerOptions": {
-        "module": "CommonJS"
+        "module": "CommonJS",
+        "target": "es2020",
+        "declaration": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "rootDir": ".",
+        "outDir": "./dist",
+        "watch": true,       // disable on release,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true
     }
 }
