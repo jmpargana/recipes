@@ -1,6 +1,6 @@
 import express from 'express'
-import logger from './logger'
-import router from './router'
+import logger from './utils/logger'
+import router from './routes/router'
 
 const port = process.env.PORT ?? 3000
 const app = express()

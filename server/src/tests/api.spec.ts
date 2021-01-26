@@ -1,6 +1,6 @@
 import express from 'express'
 import request from 'supertest'
-import router from '../router'
+import router from '../routes/router'
 
 const app = express()
 app.use('/', router)
@@ -10,7 +10,7 @@ describe('recipe\'s server api', () => {
   })
 
   it('GET recipe by id', async () => {
-    const result = await request(app).get('/recipe')
+    const result = await request(app).get('/recipe/kljsf')
     expect(result.status).toEqual(200)
   })
 
