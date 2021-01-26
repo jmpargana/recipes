@@ -19,9 +19,5 @@ jobs:
         working-directory: ./server
     steps:
     - uses: actions/checkout@v2
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: install
-    - uses: borales/actions-yarn@v2.0.0
-      with:
-        cmd: test
+    - run: yarn install
+    - run: yarn test
