@@ -2,8 +2,15 @@ import { Request, Response } from 'express'
 import Recipes, { Recipe, isRecipe } from '../models/recipe'
 import logger from '../utils/logger'
 
-const fetchRecipeById = (_: Request, res: Response) => {
-  res.send().end()
+const fetchRecipeById = async (req: Request, res: Response) => {
+  logger.info('GET recipe by id')
+  try {
+    const recipe = await Recipes.findById(req.params.id)
+    res.send(recipe).end()
+  } catch (err) {
+    logger.warn(err)
+    res.status(400).send('Something failed').end()
+  }
 }
 
 const fetchRecipes = (_: Request, res: Response) => {

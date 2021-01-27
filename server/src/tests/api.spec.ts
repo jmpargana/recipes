@@ -20,8 +20,20 @@ describe('recipe\'s server api', () => {
   })
 
   it('GET recipe by id', async () => {
-    const result = await request(app).get('/recipe/kljsf')
+    const recipe = {
+      title: 'hello',
+      method: 'hello',
+      time: 30,
+      ingridients: ['hello'],
+      tags: ['hello'],
+      userId: 232312324323
+    }
+
+    const res = await request(app).post('/').type('json').send(recipe)
+    const result = await request(app).get(`/recipe/${res.body._id}`)
     expect(result.status).toEqual(200)
+    const { _id, __v, userId, ...got } = result.body
+    expect({ ...got, userId }).toEqual({ ...recipe, userId })
   })
 
   it('GET to other endpoints sould return 404', async () => {
