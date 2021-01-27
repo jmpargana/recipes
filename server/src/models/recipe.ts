@@ -1,17 +1,18 @@
 import mongoose from 'mongoose'
-import { IUser } from './user'
+import { User } from './user'
 
-type Ingridient = string
-type Tag = string
-
-export interface IRecipe extends mongoose.Document {
-  userId: IUser['_id']
+export interface Recipe extends mongoose.Document {
+  userId: User['_id']
   title: string
-  ingridients: Ingridient[]
+  ingridients: string[]
   method: string
   time: number
   hidden: boolean
-  tags: Tag[]
+  tags: string[]
+}
+
+export const isRecipe = (r: Recipe): r is Recipe => {
+  return r?.title && r?.userId && r?.ingridients?.length > 0 && r?.method && r?.time && r?.tags?.length > 0
 }
 
 const RecipeSchema = new mongoose.Schema({
@@ -24,4 +25,4 @@ const RecipeSchema = new mongoose.Schema({
   tags: [String]
 })
 
-export default mongoose.model<IRecipe>('Recipe', RecipeSchema)
+export default mongoose.model<Recipe>('Recipe', RecipeSchema)
