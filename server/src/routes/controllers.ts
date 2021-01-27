@@ -13,8 +13,15 @@ const fetchRecipeById = async (req: Request, res: Response) => {
   }
 }
 
-const fetchRecipes = (_: Request, res: Response) => {
-  res.send([]).end()
+const fetchRecipes = async (_: Request, res: Response) => {
+  logger.info('GET all recipes')
+  try {
+    const got = await Recipes.find()
+    res.send(got).end()
+  } catch (err) {
+    logger.error(err)
+    res.status(400).send('Something failed').end()
+  }
 }
 
 const uploadRecipe = async (req: Request, res: Response) => {
@@ -28,7 +35,7 @@ const uploadRecipe = async (req: Request, res: Response) => {
     logger.verbose(`Recipe uploaded with: ${result}`)
     res.status(201).send(result).end()
   } catch (err) {
-    logger.warn(err)
+    logger.error(err)
     res.status(400).send('Invalid request').end()
   }
 }
