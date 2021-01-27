@@ -18,4 +18,15 @@ describe('recipe\'s server api', () => {
     const res = await request(app).get('/something')
     expect(res.status).toEqual(404)
   })
+
+  it('GET recipes returns array', async () => {
+    const res = await request(app).get('/recipes')
+    expect(res.body).toEqual([])
+  })
+
+
+  it('POST recipe should fail if body is missing', async () => {
+    const res = await request(app).post('/')
+    expect(res.status).toEqual(400)
+  })
 })
