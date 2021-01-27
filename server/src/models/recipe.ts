@@ -11,9 +11,8 @@ export interface Recipe extends mongoose.Document {
   tags: string[]
 }
 
-export const isRecipe = (r: Recipe): r is Recipe => {
-  return r?.title && r?.userId && r?.ingridients?.length > 0 && r?.method && r?.time && r?.tags?.length > 0
-}
+export const isRecipe = (r: Recipe): r is Recipe =>
+  r?.title && r?.userId && r?.ingridients?.length > 0 && r?.method && r?.time && r?.tags?.length > 0
 
 const RecipeSchema = new mongoose.Schema({
   userId: mongoose.Schema.Types.ObjectId,

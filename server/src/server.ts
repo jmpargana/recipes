@@ -4,10 +4,11 @@ import router from './routes/router'
 import mongoose from 'mongoose'
 
 const port = process.env.PORT ?? 3000
+const mongoUri = process.env.MONGO_URI ?? 'mongodb://localhost:27017/test'
 const app = express()
 
 logger.info('Connecting to mongodb')
-mongoose.connect('mongodb://localhost:27017/test', {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
