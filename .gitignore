@@ -4,3 +4,5 @@ dist/
 yarn.*
 *.log
 tags*
+.env
+auth_config.json

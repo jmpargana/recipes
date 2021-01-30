@@ -1,18 +1,33 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <div v-if="!$auth.loading">
+      <button v-if="!$auth.isAuthenticated" @click="login">Log in</button>
+      <button v-if="$auth.isAuthenticated" @click="logout">Log out</button>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+<script>
+// @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue'
 
-@Component({
+export default {
+  name: 'Home',
   components: {
     HelloWorld
+  },
+  methods: {
+    login () {
+      this.$auth.loginWithRedirect()
+    },
+    logout () {
+      this.$auth.logout({
+        returnTo: window.location.origin
+      })
+    }
   }
-})
-export default class Home extends Vue {}
+}
 </script>

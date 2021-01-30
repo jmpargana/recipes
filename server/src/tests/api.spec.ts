@@ -54,7 +54,8 @@ describe('recipe\'s server api', () => {
         time: 30,
         ingridients: ['hello'],
         tags: ['hello'],
-        userId: 232312324323
+        userId: 232312324323,
+        hidden: true
       },
       {
         title: 'eggplant',
@@ -62,7 +63,8 @@ describe('recipe\'s server api', () => {
         time: 30,
         ingridients: ['hello'],
         tags: ['hello'],
-        userId: 232312324323
+        userId: 232312324323,
+        hidden: false
       }
     ]
 
@@ -72,9 +74,8 @@ describe('recipe\'s server api', () => {
 
     const res = await request(app).get('/recipes').type('json')
     expect(res.status).toEqual(200)
-    expect(res.body.length).toEqual(objs.length)
-    expect(res.body[0].title).toEqual(objs[0].title)
-    expect(res.body[1].title).toEqual(objs[1].title)
+    expect(res.body.length).toEqual(objs.length - 1)
+    expect(res.body[0].title).toEqual(objs[1].title)
   })
 
   it('POST recipe should fail if body is missing', async () => {
