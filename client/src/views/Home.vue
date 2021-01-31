@@ -35,6 +35,8 @@ export default {
       axios.get('/recipes')
         .then(resp => {
           this.rawRecipes = resp.data
+          this.availableTags = new Set(
+            this.rawRecipes.reduce((prev, curr) => prev.concat(curr.tags), []))
         })
     },
     appendTag () {
