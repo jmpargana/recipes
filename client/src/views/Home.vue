@@ -1,32 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-
-    <div v-if="!$auth.loading">
-      <button v-if="!$auth.isAuthenticated" @click="login">Log in</button>
-      <button v-if="$auth.isAuthenticated" @click="logout">Log out</button>
+    <input />
+    <div class="recipes">
+      <div v-for="recipe in recipes" :key="recipe._id">
+        <h2>{{ recipe.title }}</h2>
+        <p>{{ recipe.time }}</p>
+        <ul v-for="tag in recipe.tags" :key="tag._id">
+          <li>{{ tag }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      recipes: []
+    }
+  },
+  created () {
+    this.fetchRecipes()
   },
   methods: {
-    login () {
-      this.$auth.loginWithRedirect()
-    },
-    logout () {
-      this.$auth.logout({
-        returnTo: window.location.origin
-      })
+    fetchRecipes () {
+      axios.get('/recipes')
+        .then(resp => {
+          this.recipes = resp.data
+        })
     }
   }
 }
