@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
+import Edit from '../views/Edit.vue'
 import { authGuard } from '../auth/authGuard'
 
 Vue.use(VueRouter)
@@ -22,6 +23,11 @@ const routes = [
     name: 'profile',
     component: Profile,
     beforeEnter: authGuard
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: Edit
   }
 ]
 

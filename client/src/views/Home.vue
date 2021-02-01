@@ -1,29 +1,36 @@
 <template>
-  <div class="home">
-    <input type="text" v-model="tag" @keyup.enter="appendTag" />
-    <div class="recipes">
-      <div v-for="recipe in recipes" :key="recipe._id">
-        <div class="title">
-          <h2>{{ recipe.title }} <span class="time">{{recipe.time}}</span></h2>
-        </div>
-        <ul v-for="tag in recipe.tags" :key="tag._id" class="horizontal-list">
-          <li>{{ tag }}</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <v-container>
+    <v-autocomplete
+      ref="el"
+      auto-select-first
+      rounded
+      multiple
+      chips
+      deletable-chips
+      solo
+      clearable
+      :items="availableTags"
+      @input="appendTag"
+      @change="reset"
+    ></v-autocomplete>
+    <RecipeList :recipes="recipes" />
+  </v-container>
 </template>
 
 <script>
 import axios from 'axios'
+import RecipeList from '../components/RecipeList'
 
 export default {
   name: 'Home',
+  components: {
+    RecipeList
+  },
   data () {
     return {
       recipes: [],
       tags: [],
-      tag: '',
+      availableTags: [],
       rawRecipes: []
     }
   },
@@ -35,38 +42,21 @@ export default {
       axios.get('/recipes')
         .then(resp => {
           this.rawRecipes = resp.data
-          this.availableTags = new Set(
-            this.rawRecipes.reduce((prev, curr) => prev.concat(curr.tags), []))
+          this.availableTags = [...new Set(
+            this.rawRecipes.reduce((prev, curr) => prev.concat(curr.tags), []))]
         })
     },
-    appendTag () {
-      this.tags.push(this.tag)
-      this.tag = ''
+    appendTag (tags) {
+      this.tags = tags
       this.generateRecipesByTags()
     },
     generateRecipesByTags () {
       this.recipes = this.rawRecipes.filter(recipe =>
         this.tags.every(tag => recipe.tags.includes(tag)))
+    },
+    reset () {
+      this.$refs.el.lazySearch = ''
     }
   }
 }
 </script>
-
-<style>
-.time {
-  font-size: small;
-}
-
-ul.horizontal-list {
-  list-style: none;
-  display: inline;
-  padding: 5px;
-}
-
-ul.horizontal-list li {
-  display: inline;
-  border: solid 1px black;
-  border-radius: 50px;
-  padding: 5px;
-}
-</style>

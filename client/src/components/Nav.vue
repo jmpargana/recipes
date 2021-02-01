@@ -2,9 +2,12 @@
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link v-if="$auth.isAuthenticated" to="/profile">Profile</router-link> |
+    <router-link to="/edit">Edit</router-link> |
     <a v-if="!$auth.isAuthenticated" @click="login">Login</a>
-    <a v-if="$auth.isAuthenticated" @click="logout">Logout</a>
+    <a v-if="$auth.isAuthenticated" @click="logout"> | Logout | </a>
+    <router-link v-if="$auth.isAuthenticated" to="/profile"
+      >Profile</router-link
+    >
   </div>
 </template>
 
