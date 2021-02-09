@@ -21,11 +21,11 @@ describe('HelloWorld.vue', () => {
       {
         title: 'hello',
         time: 20
-      }, 
+      },
       {
         title: 'there',
         time: 30
-      }, 
+      },
       {
         title: 'and again',
         time: 40
