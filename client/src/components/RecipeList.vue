@@ -16,8 +16,9 @@
                 :key="tag"
                 class="ma-1"
                 :color="colors[tag]"
-                >{{ tag }}</v-chip
               >
+                {{ tag }}
+              </v-chip>
             </v-list-item-subtitle>
             <v-list-item-action class="time text--lighten">
               {{ recipe.time }}
@@ -32,6 +33,7 @@
 
 <script>
 export default {
+  name: 'recipe-list',
   props: ['recipes', 'colors']
 }
 </script>
