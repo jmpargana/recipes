@@ -39,6 +39,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const open = ref(true)
 const highlighted = ref(0)
@@ -61,6 +64,7 @@ const addTag = (s) => {
   if (suggestions.includes(s) &&
     !tags.value.includes(s)
   ) {
+    store.commit('addTag', { tag: s })
     tags.value.push(s)
     tag.value = ''
     highlighted.value = 0
@@ -68,7 +72,9 @@ const addTag = (s) => {
   if (filteredSuggestions.value.length > 0 &&
     filteredSuggestions.value.length > highlighted.value
   ) {
-    tags.value.push(filteredSuggestions.value[highlighted.value])
+    const t = filteredSuggestions.value[highlighted.value]
+    store.commit('addTag', { tag: t })
+    tags.value.push(t)
     tag.value = ''
     highlighted.value = 0
   }
