@@ -47,25 +47,20 @@ const open = ref(true)
 const highlighted = ref(0)
 const tag = ref('')
 
-// FIXME: Refactor to state var
-const tags = ref([])
-
-// FIXME: Deal with repetitions
 const filteredSuggestions = computed(() => 
-  suggestions.filter(s => 
+  suggestions.value.filter(s => 
     tag.value !== '' && 
     s.includes(tag.value) &&
-    tags.value.every(t => t !== s)
+    store.state.tags.every(t => t !== s)
   )
 )
 
 // TODO: Refactor after writing functions
 const addTag = (s) => {
-  if (suggestions.includes(s) &&
-    !tags.value.includes(s)
+  if (suggestions.value.includes(s) &&
+    !store.state.tags.includes(s)
   ) {
     store.commit('addTag', { tag: s })
-    tags.value.push(s)
     tag.value = ''
     highlighted.value = 0
   }
@@ -74,7 +69,6 @@ const addTag = (s) => {
   ) {
     const t = filteredSuggestions.value[highlighted.value]
     store.commit('addTag', { tag: t })
-    tags.value.push(t)
     tag.value = ''
     highlighted.value = 0
   }
@@ -85,12 +79,5 @@ const handleNav = (num) => {
 }
 
 // FIXME: this will be a state var loaded with an axios request
-const suggestions = [
-  'soup',
-  'asian',
-  'cheese',
-  'pasta',
-  'italian',
-  'indian'
-]
+const suggestions = computed(() => store.getters.availableTags)
 </script>

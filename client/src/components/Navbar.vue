@@ -1,6 +1,6 @@
 <template>
   <nav 
-    class="sm:flex sm:justify-center border shadow"
+    class="sm:flex sm:justify-center"
   > 
     <div 
       class="block sm:hidden p-4"

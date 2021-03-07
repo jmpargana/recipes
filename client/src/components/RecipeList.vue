@@ -1,5 +1,10 @@
 <template>
   <div class="flex justify-center">
-    Results
+    {{ store.getters.matchingRecipes }}
   </div>
 </template>
+
+<script setup>
+import { useStore } from 'vuex'
+const store = useStore()
+</script>
