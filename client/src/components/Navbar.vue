@@ -22,7 +22,7 @@
             v-show="open"
             d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
           />
-	</svg>
+	      </svg>
       </button>
     </div>
     <div 
@@ -30,11 +30,11 @@
       :class="open ? 'block' : 'hidden'"
     >
       <router-link 
-	v-for="(r, i) in routes" 
-	:to="r.path" 
-	:key="i"
-	class="block sm:inline-block text-center p-4 hover:text-red-800 font-bold sm:border-white sm:border-b-4 sm:hover:text-blue-500 sm:hover:border-blue-500 sm:focus:text-indigo-800 sm:focus:border-indigo-800"
-	active-class="text-red-900 sm:border-indigo-800 sm:text-indigo-800 "
+        v-for="(r, i) in routes" 
+        :to="r.path" 
+        :key="i"
+        class="block sm:inline-block text-center p-1 m-4 hover:text-red-800 font-bold sm:border-white sm:border-b-2 sm:hover:text-green-500 sm:focus:text-green-600"
+        active-class="text-red-900 sm:text-green-600"
       >{{ r.name }}</router-link>
     </div>
   </nav>
