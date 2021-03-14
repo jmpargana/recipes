@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import {createStore} from 'vuex'
 
 const state = {
   recipes: [
@@ -23,10 +23,10 @@ const state = {
 }
 
 const mutations = {
-  addTag (state, payload) {
-   state.tags.push(payload.tag)
+  addTag(state, payload) {
+    state.tags.push(payload.tag)
   },
-  deleteTag (state, payload) {
+  deleteTag(state, payload) {
     // FIXME: move tag back to var
     state.tags.splice(payload.index, 1)
   }
@@ -39,14 +39,14 @@ const actions = {
 const getters = {
   availableTags: state => [
     ...new Set(
-      state.recipes.reduce((prev, curr) => prev.concat(curr.tags), []) 
+      state.recipes.reduce((prev, curr) => prev.concat(curr.tags), [])
     )
   ],
   matchingRecipes: state =>
     state.recipes.filter(recipe => state.tags.every(tag => recipe.tags.includes(tag)))
 }
 
-export const store = createStore({
+export default createStore({
   state,
   getters,
   actions,

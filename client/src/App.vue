@@ -1,12 +1,15 @@
 <template>
   <Navbar />
-  <div class="h-screen flex justify-center">
+  <div class="flex justify-center h-screen">
     <router-view />
   </div>
 </template>
 
-<script setup>
+<script>
 import Navbar from './components/Navbar.vue'
+export default {
+  components: {Navbar}
+}
 </script>
 
 

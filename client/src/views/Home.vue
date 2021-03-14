@@ -6,7 +6,10 @@
   </div>
 </template>
 
-<script setup>
-import SearchBlock from '../components/SearchBlock.vue'
-import RecipeList from '../components/RecipeList.vue'
+<script>
+import SearchBlock from "../components/SearchBlock.vue";
+import RecipeList from "../components/RecipeList.vue";
+export default {
+  components: { SearchBlock, RecipeList },
+};
 </script>
