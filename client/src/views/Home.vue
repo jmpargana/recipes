@@ -9,6 +9,7 @@
 <script>
 import SearchBlock from "../components/SearchBlock.vue";
 import RecipeList from "../components/RecipeList.vue";
+
 export default {
   components: { SearchBlock, RecipeList },
 };

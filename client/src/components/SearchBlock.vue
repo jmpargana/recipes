@@ -8,8 +8,12 @@
   </div>
 </template>
 
-<script setup>
-import SearchBar from './SearchBar.vue'
-import SearchOptions from './SearchOptions.vue'
-import Tags from './Tags.vue'
+<script>
+import SearchBar from "./SearchBar.vue";
+import SearchOptions from "./SearchOptions.vue";
+import Tags from "./Tags.vue";
+
+export default {
+  components: { SearchBar, SearchOptions, Tags },
+};
 </script>
