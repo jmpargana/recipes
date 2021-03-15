@@ -7,7 +7,7 @@
     >
       <div>{{ tag }}</div>
       <div
-        class="ml-1 w-3 h-3"
+        class="ml-1 w-3 h-3 delete-icon"
         @click="store.commit('deleteTag', { index: i })"
       >
         <svg
@@ -37,6 +37,7 @@ export default {
 
     return {
       tags,
+      store,
     };
   },
 };
