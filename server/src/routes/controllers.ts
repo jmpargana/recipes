@@ -1,6 +1,8 @@
-import { Request, Response } from 'express'
-import Recipes, { Recipe, isRecipe } from '../models/recipe'
+import {Request, Response} from 'express'
+import Recipes, {Recipe, isRecipe} from '../models/recipe'
+import {isUser, Users} from '../models/user'
 import logger from '../utils/logger'
+import bcrypt from 'bcrypt'
 
 const fetchRecipeById = async (req: Request, res: Response) => {
   logger.info('GET recipe by id')
@@ -16,7 +18,7 @@ const fetchRecipeById = async (req: Request, res: Response) => {
 const fetchRecipes = async (_: Request, res: Response) => {
   logger.info('GET all recipes')
   try {
-    const got = await Recipes.find({ hidden: false })
+    const got = await Recipes.find({hidden: false})
     res.send(got).end()
   } catch (err) {
     logger.error(err)
@@ -27,7 +29,7 @@ const fetchRecipes = async (_: Request, res: Response) => {
 const fetchRecipesByUserId = async (req: Request, res: Response) => {
   logger.info(`GET all recipes for user: ${req.params?.userId}`)
   try {
-    const got = await Recipes.find({ userId: req.params?.userId })
+    const got = await Recipes.find({userId: req.params?.userId})
     res.send(got).end()
   } catch (err) {
     logger.error(err)
@@ -51,9 +53,55 @@ const uploadRecipe = async (req: Request, res: Response) => {
   }
 }
 
+const register = async (req: Request, res: Response) => {
+  logger.info('POST register new user')
+  try {
+    const user = req.body
+
+    if (!isUser(user)) {
+      throw new Error('Invalid user object')
+    }
+    const hash = await bcrypt.genSalt(10)
+    Users.create({
+      email: user.email,
+      password: await bcrypt.hash(user.password, hash)
+    }, (err, doc) => {
+      if (err) throw err
+      res.json({user: doc}).end()
+    })
+  } catch (err) {
+    logger.warn(err)
+    res.status(400).json({err: err.toString()})
+  }
+}
+
+const login = async (req: Request, res: Response) => {
+  logger.info('POST login')
+  try {
+    const user = req.body
+    if (!isUser(user)) {
+      throw new Error('Invalid user mail and password')
+    }
+    const u = await Users.findOne({email: user.email})
+    if (!u) {
+      throw new Error('User not registered')
+    }
+    const valid = await bcrypt.compare(user.password, u.password)
+    if (!valid) {
+      throw new Error('Invalid password')
+    }
+    res.json({user: u}).end()
+  } catch (err) {
+    logger.warn(err)
+    res.status(400).json({err: err.toString()})
+  }
+}
+
 export {
   fetchRecipeById,
   fetchRecipes,
   fetchRecipesByUserId,
-  uploadRecipe
+  uploadRecipe,
+  register,
+  login
 }
