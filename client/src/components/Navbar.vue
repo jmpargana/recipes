@@ -32,7 +32,7 @@
         v-for="(r, i) in routes"
         :to="r.path"
         :key="i"
-        class="block p-1 m-4 font-bold text-center sm:inline-block hover:text-red-800 sm:border-white sm:border-b-2 sm:hover:text-green-500 sm:focus:text-green-600"
+        class="sm:text-lg block p-1 m-4 font-bold text-center sm:inline-block hover:text-red-800 sm:border-white sm:border-b-2 sm:hover:text-green-500 sm:focus:text-green-600"
         active-class="text-red-900 sm:text-green-600"
         >{{ r.name }}</router-link
       >
