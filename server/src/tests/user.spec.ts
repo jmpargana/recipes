@@ -6,14 +6,11 @@ import router from '../routes/router'
 
 const app = express()
 
-
 beforeAll(async () => {
   app.use(express.json())
   app.use('/', router)
   await connect()
 })
-
-// Instantiate mongodb
 
 describe('user routes', () => {
   it('fails: register empty body', async () => {
@@ -48,6 +45,15 @@ describe('user routes', () => {
     expect(mongoose.Types.ObjectId.isValid(res.body.user._id)).toBe(true)
   })
 
-  // All login failures come here:
+  test.each(invalidUsers)('fails login: invalid user object', async (input) => {
+    const res = await request(app).post('/user/login').send(input)
+    expect(res.status).toEqual(400)
+    expect(res.body.err).toEqual('Error: Invalid user mail and password')
+  })
 
+  it('fail with wrong password', async () => {
+    await request(app).post('/user/register').send({email: 'peter', password: 'grande'})
+    const res = await request(app).post('/user/login').send({email: 'peter', password: 'smalls'})
+    expect(res.status).toEqual(400)
+  })
 })

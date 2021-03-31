@@ -3,6 +3,9 @@ import Recipes, {Recipe, isRecipe} from '../models/recipe'
 import {isUser, Users} from '../models/user'
 import logger from '../utils/logger'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
+const secret = process.env.JWT_SECRET ?? 'JWT_SECRET'
 
 const fetchRecipeById = async (req: Request, res: Response) => {
   logger.info('GET recipe by id')
@@ -27,9 +30,11 @@ const fetchRecipes = async (_: Request, res: Response) => {
 }
 
 const fetchRecipesByUserId = async (req: Request, res: Response) => {
-  logger.info(`GET all recipes for user: ${req.params?.userId}`)
+  // @ts-ignore
+  logger.info(`GET all recipes for user: ${req.user.email}`)
   try {
-    const got = await Recipes.find({userId: req.params?.userId})
+    // @ts-ignore
+    const got = await Recipes.find({userId: req.user.user._id})
     res.send(got).end()
   } catch (err) {
     logger.error(err)
@@ -57,11 +62,10 @@ const register = async (req: Request, res: Response) => {
   logger.info('POST register new user')
   try {
     const user = req.body
-
     if (!isUser(user)) {
       throw new Error('Invalid user object')
     }
-    const hash = await bcrypt.genSalt(10)
+    const hash = await bcrypt.genSalt(12)
     Users.create({
       email: user.email,
       password: await bcrypt.hash(user.password, hash)
@@ -90,7 +94,8 @@ const login = async (req: Request, res: Response) => {
     if (!valid) {
       throw new Error('Invalid password')
     }
-    res.json({user: u}).end()
+    const token = jwt.sign({user: u}, secret)
+    res.json({user: {email: u.email, _id: u._id}, token}).end()
   } catch (err) {
     logger.warn(err)
     res.status(400).json({err: err.toString()})

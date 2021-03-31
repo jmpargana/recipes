@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { User } from './user'
+import {User} from './user'
 
 export interface Recipe extends mongoose.Document {
   userId: User['_id']
@@ -12,7 +12,9 @@ export interface Recipe extends mongoose.Document {
 }
 
 export const isRecipe = (r: Recipe): r is Recipe =>
-  r?.title && r?.userId && r?.ingridients?.length > 0 && r?.method && r?.time && r?.tags?.length > 0
+  r?.title && r?.userId && r?.ingridients?.length > 0 && r?.method && 
+    r?.time &&      
+    r?.tags?.length > 0
 
 const RecipeSchema = new mongoose.Schema({
   userId: mongoose.Schema.Types.ObjectId,
