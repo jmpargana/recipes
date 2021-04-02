@@ -34,7 +34,7 @@ const fetchRecipesByUserId = async (req: Request, res: Response) => {
   logger.info(`GET all recipes for user: ${req.user.email}`)
   try {
     // @ts-ignore
-    const got = await Recipes.find({userId: req.user.user._id})
+    const got = await Recipes.find({userId: req.user._id})
     res.send(got).end()
   } catch (err) {
     logger.error(err)

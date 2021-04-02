@@ -10,12 +10,13 @@ const secured = async (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) return res.sendStatus(401)
 
-  jwt.verify(token, secret, (err, user) => {
+  jwt.verify(token, secret, (err, doc) => {
     if (err) {
       logger.warn(err)
       return res.sendStatus(401)
     }
-    req.user = user
+    // @ts-ignore
+    req.user = doc.user
     next()
   })
 }
