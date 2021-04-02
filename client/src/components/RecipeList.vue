@@ -4,7 +4,14 @@
   </div>
 </template>
 
-<script setup>
-import { useStore } from 'vuex'
-const store = useStore()
+<script>
+import { useStore } from "vuex";
+export default {
+  setup() {
+    const store = useStore();
+    return {
+      store,
+    };
+  },
+};
 </script>
