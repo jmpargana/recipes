@@ -41,6 +41,7 @@ describe('secured', () => {
 
     const recipes = await request(app).get('/recipes/user').set('Authorization', 'Bearer ' + login.body.token)
     expect(recipes.status).toEqual(200)
+    // @ts-ignore
     expect(recipes.body.map(({_id, __v, ...res}) => res)).toEqual([
       recipe
     ])

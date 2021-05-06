@@ -4,11 +4,11 @@ import {secured} from './middleware'
 
 const router = Router()
 
-router.get('/recipe/:id', fetchRecipeById)
-router.get('/recipes', fetchRecipes)
-router.get('/recipes/user', secured, fetchRecipesByUserId)
+router.get('/', fetchRecipes)
+router.get('/user', secured, fetchRecipesByUserId)
+router.get('/:id', fetchRecipeById)
 router.post('/', secured, uploadRecipe)
-router.post('/user/register', register)
-router.post('/user/login', login)
+router.post('/register', register)
+router.post('/login', login)
 
 export default router
