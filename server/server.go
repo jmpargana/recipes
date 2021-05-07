@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/gofiber/fiber/v2"
+    "github.com/go-playground/validator"
 )
 
 type MongoInstance struct {
@@ -43,15 +44,46 @@ func Connect() error {
 	return nil
 }
 
+
+type ErrorResponse struct {
+    FailedField string
+    Tag         string
+    Value       string
+}
+
+func validateRecipe(r Recipe) []*ErrorResponse {
+    var errors []*ErrorResponse
+    validate := validator.New()
+    err := validate.Struct(r)
+    if err != nil {
+        for _, err := range err.(validator.ValidationErrors) {
+            var element ErrorResponse
+            element.FailedField = err.StructNamespace()
+            element.Tag = err.Tag()
+            element.Value = err.Param()
+            errors = append(errors, &element)
+        }
+    }
+    if len(r.Tags) < 1 {
+        errors = append(errors, &ErrorResponse{FailedField: "Recipe.Tags", Value: "Need at least one Tag"})
+    }
+    if len(r.Ingridients) < 1 {
+        errors = append(errors, &ErrorResponse{FailedField: "Recipe.Ingridients", Value: "Need at least one Ingridient"})
+    }
+    return errors
+}
+
+type Ingridient struct {
+        Name   string       `validate:"required"`
+        Amount string       `validate:"required"`
+}
+
 type Recipe struct {
-	Title       string
-	Tags        []string
-	Method      string
-	Time        int
-	Ingridients []struct {
-		Name   string
-		Amount string
-	}
+    Title       string      `validate:"required"`
+    Tags        []string    `validate:"required"`
+    Method      string      `validate:"required"`
+    Time        int         `validate:"required"`
+	Ingridients []*Ingridient `validate:"required,dive,required"`
 }
 
 func matchTags(c *fiber.Ctx) error {
@@ -85,6 +117,10 @@ func addRecipe(c *fiber.Ctx) error {
 	}
 
 	// Validate here
+    errors := validateRecipe(*recipe)
+    if errors != nil {
+        return c.Status(400).JSON(errors)
+    }
 
 	// Save in db
 	collection := mg.Db.Collection("recipes")
@@ -94,6 +130,36 @@ func addRecipe(c *fiber.Ctx) error {
 	}
 
 	return c.Status(201).JSON(recipe)
+}
+
+type Tag struct {
+    Tag string `bson:"tags"`
+}
+
+func allTags(c *fiber.Ctx) error {
+    cursor, err := mg.Db.Collection("recipes").Aggregate(c.Context(), bson.A{
+        bson.D{{ "$unwind", "$tags" }},
+    } )
+    if err != nil {
+        return c.Status(500).SendString(err.Error())
+    }
+
+    check := make(map[string]struct{})
+
+    for cursor.Next(c.Context()) {
+        var obj Tag
+        if err := cursor.Decode(&obj); err != nil {
+            return c.Status(500).SendString(err.Error())
+        }
+        check[obj.Tag] = struct{}{}
+    } 
+
+    tags := make([]string, len(check))
+    for tag := range check {
+        tags = append(tags, tag)
+    }
+    
+    return c.JSON(tags)
 }
 
 func main() {
@@ -106,6 +172,7 @@ func main() {
 	router := app.Group("/api")
 	router.Post("/", addRecipe)
 	router.Get("/", matchTags)
+    router.Get("/tags", allTags)
 
 	log.Fatal(app.Listen(":3000"))
 }
