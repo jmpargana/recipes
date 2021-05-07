@@ -1,19 +1,19 @@
-import { Router } from "express"
+import { Router } from 'express'
 import {
   fetchRecipes,
   fetchRecipeById,
   uploadRecipe,
   fetchRecipesByUserId,
-  registerUser,
-} from "./controllers"
-import checkJwt from "../utils/auth"
+} from './controllers'
+import { secured } from './middleware'
 
 const router = Router()
 
-router.get("/recipe/:id", fetchRecipeById)
-router.get("/recipes", fetchRecipes)
-router.get("/recipes/:userId", checkJwt, fetchRecipesByUserId)
-router.post("/register", registerUser)
-router.post("/", uploadRecipe)
+router.get('/', fetchRecipes)
+router.get('/user', secured, fetchRecipesByUserId)
+router.get('/:id', fetchRecipeById)
+router.post('/', secured, uploadRecipe)
+router.post('/register', register)
+router.post('/login', login)
 
 export default router

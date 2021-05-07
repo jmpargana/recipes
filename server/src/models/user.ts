@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
-interface IUser extends mongoose.Document {
+interface User extends mongoose.Document {
   email: string
   password: string
 }
@@ -10,4 +10,8 @@ const userSchema = new mongoose.Schema({
   password: String,
 })
 
-export const Users = mongoose.model<IUser>("Users", userSchema)
+const Users = mongoose.model<User>('Users', userSchema)
+
+const isUser = (u: User): u is User => !!u && !!u.email && !!u.password
+
+export { User, isUser, Users }

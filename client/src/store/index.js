@@ -1,6 +1,7 @@
 import {createStore} from 'vuex'
 
 const state = {
+  // FIXME: call api on launch
   recipes: [
     {
       title: "Marrocan Feast",
@@ -20,6 +21,7 @@ const state = {
     }
   ],
   tags: ['pizza', 'italian'],
+  user: ''
 }
 
 const mutations = {
@@ -29,12 +31,13 @@ const mutations = {
   deleteTag(state, payload) {
     // FIXME: move tag back to var
     state.tags.splice(payload.index, 1)
+  },
+  addUserToken(state, payload) {
+    state.user = payload.token
   }
 }
 
-const actions = {
-
-}
+const actions = {}
 
 const getters = {
   availableTags: state => [
@@ -43,7 +46,8 @@ const getters = {
     )
   ],
   matchingRecipes: state =>
-    state.recipes.filter(recipe => state.tags.every(tag => recipe.tags.includes(tag)))
+    state.recipes.filter(recipe => state.tags.every(tag => recipe.tags.includes(tag))),
+  loggedIn: state => state.user !== ''
 }
 
 export default createStore({
