@@ -34,3 +34,9 @@ type TagQuery struct {
 	Tags        []string     `query:"tags"`
 	Ingridients []Ingridient `query:"ingridients"`
 }
+
+type User struct {
+	ID       string `bson:"_id"`
+	Email    string `bson:"email"`
+	Password string `bson:"password"`
+}
