@@ -81,3 +81,8 @@ func allTags(c *fiber.Ctx) error {
 
 	return c.JSON(tags)
 }
+
+func login(c *fiber.Ctx) error {
+	// FIXME: implement
+	return c.Status(200).SendString("Hello")
+}

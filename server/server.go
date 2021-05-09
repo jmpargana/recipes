@@ -21,6 +21,7 @@ func main() {
 	router.Post("/", addRecipe)
 	router.Get("/", matchTags)
 	router.Get("/tags", allTags)
+	router.Post("/login", login)
 
 	log.Fatal(app.Listen(":3000"))
 }
