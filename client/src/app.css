@@ -1,0 +1,43 @@
+/**
+ * Global Variables
+ *
+ */
+:root {
+  font-family: 'Noto Sans JP', sans-serif;
+  --color-link: #6ec6ff;
+  --color-reserved: #f44336;
+  --color-blocked: #f57c00;
+  --color-passed: #bdbdbd;
+  --color-toggled: #512da8;
+}
+
+/**
+ * Remove browser defaults
+ */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input,
+button {
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+

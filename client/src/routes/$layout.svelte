@@ -1,8 +1,9 @@
-<nav>
-	<a href="/">Home</a>
-	<a href="/upload">Upload</a>
-	<a href="/play">Play</a>
-</nav>
+<script>
+	import '../app.css';
+	import Navbar from '$lib/Navbar.svelte';
+</script>
+
+<Navbar />
 
 <main>
 	<slot />

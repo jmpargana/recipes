@@ -178,7 +178,9 @@ func main() {
 	}
 
 	app := fiber.New()
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	router := app.Group("/api")
 	router.Post("/", addRecipe)
