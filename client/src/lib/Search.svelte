@@ -6,7 +6,7 @@
 	let tag;
 	let searching;
 
-	function handleChange(e) {
+	function handleChange() {
 		searching = true;
 		matchingTags = tags.filter((t) => t.includes(tag));
 	}

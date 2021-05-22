@@ -27,8 +27,7 @@
 			body: JSON.stringify({
 				...recipe,
 				ingridients,
-				tags,
-				method
+				tags
 			})
 		});
 		console.log(res);
