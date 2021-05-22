@@ -7,3 +7,4 @@ tags*
 .env
 auth_config.json
 tmp
+server/recipes
