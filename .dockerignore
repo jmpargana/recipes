@@ -1,2 +1,7 @@
-node_modules/
-dist/
+server/tags
+server/go.sum
+server/*_test.go
+server/recipes
+
+client/node_modules
+client/build

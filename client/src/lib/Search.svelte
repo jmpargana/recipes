@@ -57,9 +57,13 @@
 	}
 
 	fetch('http://localhost:3000/api/tags').then(async (res) => {
-		const data = await res.json();
-		tags = data;
-		matchingTags = data;
+		try {
+			const data = await res.json();
+			tags = data;
+			matchingTags = data;
+		} catch (err) {
+			console.log(err);
+		}
 	});
 </script>
 
