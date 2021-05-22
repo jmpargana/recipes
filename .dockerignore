@@ -5,3 +5,7 @@ server/recipes
 
 client/node_modules
 client/build
+client/.babelrc
+client/.eslint*
+client/.prettier*
+client/jest.config.js

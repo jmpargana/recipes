@@ -1,9 +1,10 @@
-tags
 node_modules/
 dist/
 yarn.*
 *.log
-tags*
+tags
+server/tags
+client/tags
 .env
 auth_config.json
 tmp
