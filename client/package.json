@@ -7,9 +7,10 @@
 		"preview": "svelte-kit preview",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"lint:fix": "npm run format && npm run lint",
-		"format": "prettier --write --plugin-search-dir=. .",
+		"clean:test": "./scripts/clean",
 		"test": "jest src",
-		"test:watch": "npm run test -- --watch"
+		"test:watch": "npm run test -- --watch",
+		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.14.2",
@@ -34,18 +35,5 @@
 		"@fontsource/fira-mono": "^4.2.2",
 		"@lukeed/uuid": "^2.0.0",
 		"cookie": "^0.4.1"
-	},
-	"jest": {
-		"transform": {
-			"^.+\\.js$": "babel-jest",
-			"^.+\\.svelte$": "svelte-jester"
-		},
-		"moduleFileExtensions": [
-			"js",
-			"svelte"
-		],
-		"setupFilesAfterEnv": [
-			"@testing-library/jest-dom/extend-expect"
-		]
 	}
 }

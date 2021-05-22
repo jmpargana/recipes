@@ -1,7 +1,7 @@
 FROM node:alpine AS client
 COPY client /app
 WORKDIR /app
-RUN npm ci && npm run build
+RUN npm run clean:test && npm ci && npm run build
 
 FROM golang:1.16
 COPY --from=client /app/build /recipes/build
