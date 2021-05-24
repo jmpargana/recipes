@@ -1,95 +1,41 @@
 <script>
+	import { onDestroy } from 'svelte'
 	import InputBlock from '$lib/InputBlock.svelte';
 	import Markdown from '$lib/Markdown.svelte';
+  import { recipe } from '../store/recipe';
+  import { errors } from '../store/errs';
+  import { validate } from '../utils/form';
 
-	let errMsg = {
-		tags: '',
-		title: '',
-		time: '',
-		method: '',
-		ingridients: ''
-	};
-
-	let recipe = {
-		title: '',
-		time: ''
-	};
-
-	let title = '';
-	let tags = [];
-	let ingridients = [];
+  let v = validate(errors, recipe)
+	// FIXME: pointer updating all objects
 	let ingridient = { name: '', amount: '' };
 
 	async function handleSubmit() {
-		// Validate everything else
+		// v.completeValidation()
 		const res = await fetch('http://localhost:3000/api', {
 			method: 'POST',
-			body: JSON.stringify({
-				...recipe,
-				ingridients,
-				tags
-			})
+			body: JSON.stringify($recipe)
 		});
+    // FIXME: open card with result
 		console.log(res);
 	}
 
-	const addIngridient = () => {
-		if (!ingridient.name && !ingridient.amount) {
-			errMsg = {
-				...errMsg,
-				ingridients: 'Each ingridient must have a name and an amount'
-			};
-			return;
-		}
-
-		ingridients = [...ingridients, ingridient];
-		ingridient = { name: '', amount: '' };
-	};
-
-	let parseTime = (e) => {
-		if (!/^\d+$/.test(e.target.value)) {
-			errMsg = {
-				...errMsg,
-				time: 'Must give numeric value in minutes'
-			};
-			return;
-		}
-		errMsg = {
-			...errMsg,
-			time: ''
-		};
-		recipe.time = e.target.value;
-	};
-
-	let addTag = (e) => {
-		const newVal = e.target.value;
-		if (e.key === 'Enter' && newVal) {
-			if (tags.some((tag) => tag === newVal)) {
-				errMsg = {
-					...errMsg,
-					tags: "Can't use the same tag twice"
-				};
-				return;
-			}
-			tags = [...tags, newVal];
-			errMsg = {
-				...errMsg,
-				tags: ''
-			};
-			e.target.value = '';
-		}
-	};
+	function handleIngridient() {
+		ingridient = v.ingridient(ingridient)
+	}
+	
+	onDestroy(v.recipeUnsubscriber)
 </script>
 
 <h1>Upload Section</h1>
 
 <div class="form-container">
 	<div class="grid-container">
-		<InputBlock value={title} label={'Title'} />
-		<InputBlock customEvent={parseTime} err={errMsg.time} label={'Time'} />
-		<InputBlock err={errMsg.tags} customEvent={addTag} span={2} label={'Tags'} />
+		<InputBlock value={$recipe.title} label={'Title'} />
+		<InputBlock customEvent={v.time} err={$errors.time} label={'Time'} />
+    <InputBlock customEvent={v.tag} err={$errors.tag} span={2} label={'Tags'} />
 		<div class="tags">
-			{#each tags as tag}
+			{#each $recipe.tags as tag}
 				<div class="tag">{tag}</div>
 			{/each}
 		</div>
@@ -105,11 +51,11 @@
 		<Markdown />
 	</div>
 	<div class="ingridients-container">
-		<button on:click={addIngridient}>Add Ingridient</button>
+		<button on:click={handleIngridient}>Add Ingridient</button>
 		<span>Ingridients</span>
 
 		<ul>
-			{#each ingridients as i}
+			{#each $recipe.ingridients as i}
 				<li>{i.name} {i.amount}</li>
 			{/each}
 		</ul>

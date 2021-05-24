@@ -3,7 +3,7 @@
 	export let textArea = false;
 	export let customEvent = null;
 	export let span = 1;
-	let value;
+	export let value;
 	export let err = '';
 </script>
 
