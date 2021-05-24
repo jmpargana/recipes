@@ -1,12 +1,12 @@
 <script>
-	import { onDestroy } from 'svelte'
+	import { onDestroy } from 'svelte';
 	import InputBlock from '$lib/InputBlock.svelte';
 	import Markdown from '$lib/Markdown.svelte';
-  import { recipe } from '../store/recipe';
-  import { errors } from '../store/errs';
-  import { validate } from '../utils/form';
+	import { recipe } from '../store/recipe';
+	import { errors } from '../store/errs';
+	import { validate } from '../utils/form';
 
-  let v = validate(errors, recipe)
+	let v = validate(errors, recipe);
 	// FIXME: pointer updating all objects
 	let ingridient = { name: '', amount: '' };
 
@@ -16,15 +16,15 @@
 			method: 'POST',
 			body: JSON.stringify($recipe)
 		});
-    // FIXME: open card with result
+		// FIXME: open card with result
 		console.log(res);
 	}
 
 	function handleIngridient() {
-		ingridient = v.ingridient(ingridient)
+		ingridient = v.ingridient(ingridient);
 	}
-	
-	onDestroy(v.recipeUnsubscriber)
+
+	onDestroy(v.recipeUnsubscriber);
 </script>
 
 <h1>Upload Section</h1>
@@ -33,7 +33,7 @@
 	<div class="grid-container">
 		<InputBlock value={$recipe.title} label={'Title'} />
 		<InputBlock customEvent={v.time} err={$errors.time} label={'Time'} />
-    <InputBlock customEvent={v.tag} err={$errors.tag} span={2} label={'Tags'} />
+		<InputBlock customEvent={v.tag} err={$errors.tag} span={2} label={'Tags'} />
 		<div class="tags">
 			{#each $recipe.tags as tag}
 				<div class="tag">{tag}</div>
