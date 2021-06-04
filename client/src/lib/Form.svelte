@@ -2,9 +2,9 @@
 	import SvelteMarkdown from 'svelte-markdown';
 	import { schema, ingridientSchema } from '../utils/form';
 
-	let label = false;
 	let edit = true;
 	let errors = {};
+	let iErrs = {};
 	let recipe = { title: '', time: null, method: '', ingridients: [], tags: [] };
 	let ingridient = { name: '', amount: '' };
 
@@ -32,7 +32,6 @@
 			return true;
 		} catch (err) {
 			errors = err.inner.reduce((acc, err) => ({ ...acc, [err.path]: err.message }), {});
-			console.log(errors);
 			return false;
 		}
 	}
@@ -48,8 +47,8 @@
 			// FIXME: open card with result
 			console.log(res);
 		} catch (err) {
-			console.error(err);
 			// FIXME: Deal with fetch error
+			console.error(err);
 		}
 	}
 
@@ -58,7 +57,9 @@
 			await ingridientSchema.validate(ingridient, { abortEarly: false });
 			recipe = { ...recipe, ingridients: [...recipe.ingridients, ingridient] };
 			ingridient = { name: '', amount: '' };
-		} catch (err) {}
+		} catch (err) {
+			iErrs = err.inner.reduce((acc, err) => ({ ...acc, [err.path]: err.message }), {});
+		}
 	}
 </script>
 
@@ -67,14 +68,23 @@
 		<div class="grid span2">
 			<input class="input" type="text" id="title" bind:value={recipe.title} />
 			<label class="label" for="title">Title</label>
+			{#if errors.title}
+				<span class="err">{errors.title}</span>
+			{/if}
 		</div>
 		<div class="grid">
-			<label for="">Time</label>
 			<input type="text" bind:value={recipe.time} />
+			<label for="">Time</label>
+			{#if errors.time}
+				<span class="err">{errors.time}</span>
+			{/if}
 		</div>
 		<div class="grid span3">
-			<label for="tag">Tags</label>
 			<input type="text" id="tag" on:keyup|preventDefault={handleTag} />
+			<label for="tag">Tags</label>
+			{#if errors.tags}
+				<span class="err">{errors.tags}</span>
+			{/if}
 		</div>
 		<div class="span3 flex">
 			{#each recipe.tags as tag}
@@ -82,17 +92,25 @@
 			{/each}
 		</div>
 		<div class="grid">
-			<label for="">Ingridient</label>
 			<input type="text" bind:value={ingridient.name} />
+			<label for="">Ingridient</label>
+			{#if iErrs.name}
+				<span class="err">{iErrs.name}</span>
+			{/if}
 		</div>
 		<div class="grid">
-			<label for="">Amount</label>
 			<input type="text" bind:value={ingridient.amount} />
+			<label for="">Amount</label>
+			{#if iErrs.amount}
+				<span class="err">{iErrs.amount}</span>
+			{/if}
 		</div>
-		<button class="btn" on:click|preventDefault={handleIngridient}>Add Ingridient</button>
+		<div class="grid">
+			<button class="btn" on:click|preventDefault={handleIngridient}>Add Ingridient</button>
+		</div>
 
 		<div class="grid span3">
-			<label for="method">Method</label>
+			<span class="method">Method</span>
 			<div class="flex">
 				<div class="tab" on:click={() => (edit = true)}>Edit</div>
 				<div class="tab" on:click={() => (edit = false)}>Preview</div>
@@ -107,18 +125,24 @@
 					<SvelteMarkdown bind:source={recipe.method} />
 				</div>
 			{/if}
+			{#if errors.method}
+				<span class="err">{errors.method}</span>
+			{/if}
 		</div>
 	</div>
 	<div class="ingridients-container">
-		<span>Ingridients</span>
-		<ul>
+		<span class="label ingridients">Ingridients</span>
+		{#if errors.ingridients}
+			<span class="err">{errors.ingridients}</span>
+		{/if}
+		<ul class="grid">
 			{#each recipe.ingridients as i}
-				<li>{i.name} {i.amount}</li>
+				<li class="ingridient">{i.name}: {i.amount}</li>
 			{/each}
 		</ul>
 	</div>
 	<div class="submit">
-		<input type="submit" on:click|preventDefault={handleSubmit} placeholder="Submit" />
+		<input class="btn" type="submit" on:click|preventDefault={handleSubmit} placeholder="Submit" />
 	</div>
 </form>
 
@@ -162,5 +186,38 @@
 	.panel {
 		height: 200px;
 		border: 1px solid black;
+	}
+
+	.method {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		font-size: 1.1rem;
+	}
+
+	.submit > .btn {
+		min-width: 180px;
+		min-height: 50px;
+		text-transform: uppercase;
+	}
+
+	.ingridients-container {
+		margin-left: 2rem;
+	}
+	.ingridients-container .label {
+		font-size: 1.8rem;
+	}
+
+	.ingridients-container .ingridient {
+		margin-top: 1rem;
+		background: var(--color-link);
+		justify-self: start;
+		padding: 0.4rem 0.8rem;
+		border-radius: 20px;
+	}
+
+	.err {
+		font-size: 0.7rem;
+		color: red;
+		position: relative;
 	}
 </style>

@@ -110,6 +110,7 @@
 		appearance: none;
 		border: none;
 		outline: none;
+		transform: none;
 	}
 
 	.wrapper {

@@ -9,8 +9,9 @@
 
 <style>
 	.container {
-		padding: 8rem;
+		padding: 6rem;
 		display: grid;
 		justify-content: center;
+		gap: 1rem;
 	}
 </style>

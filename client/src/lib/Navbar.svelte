@@ -16,18 +16,6 @@
 		width: calc(100vw - 4rem);
 		margin: 2rem;
 	}
-
-	button {
-		appearance: none;
-		border: none;
-		border-radius: 0.5rem;
-		background-color: #000;
-		font-weight: 700;
-		color: #fff;
-		padding: 0.5rem 1.2rem;
-		z-index: 3;
-	}
-
 	.routes {
 		display: flex;
 	}
