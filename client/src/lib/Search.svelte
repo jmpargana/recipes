@@ -1,26 +1,29 @@
 <script>
-	let tags;
-	let selectedTags = ['one', 'two'];
-	let selectedTagIndex = 0;
-	let matchingTags;
-	let tag;
-	let searching;
+	import { onMount } from 'svelte';
+	import { tags, matchingTags, tag, availableTags, selectedTags } from '../store/tags';
 
-	function handleChange() {
-		searching = true;
-		matchingTags = tags.filter((t) => t.includes(tag));
+	let searching;
+	let selectedTagIndex = 0;
+
+	onMount(tags.load);
+
+	// TODO: add effect when append fails.
+	function handleAdd(t) {
+		if (!$availableTags.includes(t)) return;
+		selectedTags.append(t);
+		searching = false;
 	}
 
 	function handleKey(e) {
 		switch (e.key) {
 			case 'Enter':
-				addTag();
+				handleAdd($tag);
 				break;
 			case 'Tab':
-				handleTab();
+				handleAdd($availableTags[selectedTagIndex]);
 				break;
 			case 'ArrowDown':
-				if (selectedTagIndex > selectedTags.length - 2) {
+				if (selectedTagIndex > $selectedTags.length - 2) {
 					selectedTagIndex += 1;
 				}
 				break;
@@ -31,40 +34,6 @@
 				break;
 		}
 	}
-
-	function add() {
-		selectedTags = [...selectedTags, tag];
-		matchingTags = tags.filter((t) => selectedTags.every((s) => s !== t));
-		tag = '';
-		searching = false;
-
-		fetch('http://localhost:3000/api?tags=' + selectedTags.join(',')).then(async (res) => {
-			const data = await res.json();
-			console.log(data);
-		});
-	}
-
-	function handleTab() {
-		// Onblur event not allowing this
-		tag = matchingTags[selectedTagIndex];
-		add();
-	}
-
-	function addTag() {
-		if (!selectedTags.includes(tag) && tags.includes(tag)) {
-			add();
-		}
-	}
-
-	fetch('http://localhost:3000/api/tags').then(async (res) => {
-		try {
-			const data = await res.json();
-			tags = data;
-			matchingTags = data;
-		} catch (err) {
-			console.log(err);
-		}
-	});
 </script>
 
 <div class="wrapper">
@@ -73,11 +42,10 @@
 			<input
 				type="text"
 				placeholder="Search"
+				bind:value={$tag}
 				on:keydown={handleKey}
-				bind:value={tag}
 				on:focus={() => (searching = true)}
 				on:blur={() => (searching = false)}
-				on:input={handleChange}
 			/>
 
 			<svg
@@ -89,7 +57,7 @@
 				y="0px"
 				viewBox="0 0 512 512"
 				style="enable-background:new 0 0 512 512;"
-				on:click={addTag}
+				on:click={() => handleAdd(tag)}
 				xml:space="preserve"
 			>
 				<g>
@@ -113,24 +81,25 @@
 			>
 		</div>
 
-		{#if tags && searching}
-			<ul>
-				{#each matchingTags as tag, i}
+		{#if searching}
+			<ul class="matching-tags-wrapper">
+				{#each $matchingTags as t, i}
 					<li
-						on:click={handleTab}
+						class="matching-tag"
+						on:mousedown={handleAdd(t)}
 						on:mousemove={() => (selectedTagIndex = i)}
 						class:selected={selectedTagIndex === i}
 					>
-						{tag}
+						{t}
 					</li>
 				{/each}
 			</ul>
 		{/if}
 	</div>
-	{#if selectedTags}
+	{#if $selectedTags}
 		<ul class="tags">
-			{#each selectedTags as tag}
-				<li>{tag}</li>
+			{#each $selectedTags as tag}
+				<li on:click={selectedTags.remove(tag)}>{tag}</li>
 			{/each}
 		</ul>
 	{/if}

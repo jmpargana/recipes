@@ -1,54 +1,24 @@
-const addIngridient = errors => recipe => ingridient => {
-  console.log(ingridient)
-  if (!ingridient.name && !ingridient.amount) {
-    errors.ingridients('Each ingridient must have a name and an amount')
-    return ingridient;
-  }
+import * as yup from 'yup'
 
-  recipe.changeIngridient(ingridient)
-  return { name: '', amount: '' };
-};
+export const ingridientSchema = yup.object().shape({
+		name: yup.string().required('Each ingridient must have a name.'),
+		amount: yup.string().required('Each ingridient must have an amount.')
+	});
 
-
-const parseTime = errors => recipe => e => {
-  if (!/^\d+$/.test(e.target.value)) {
-    errors.time('Must give numeric value in minutes')
-    return;
-  }
-
-  errors.time('')
-  recipe.changeTime(e.target.value)
-};
-
-
-const addTag = errors => recipe => tags => e => {
-  const newVal = e.target.value;
-
-  if (e.key === 'Enter' && newVal) {
-    if (tags.some((tag) => tag === newVal)) {
-      errors.tags("Can't use the same tag twice")
-      return
-    }
-
-    recipe.changeTag(newVal)
-    errors.tags('')
-    e.target.value = '';
-  }
-};
-
-// Container to form validation details.
-// Holds object with each error message to show in form.
-// and the functions needed for each field.
-// Recipe is a store with ready methods.
-export function validate(errors, recipe) {
-  let tags
-  const recipeUnsubscriber = recipe.subscribe(r => tags = r.tags)
-
-  // FIXME: add complete validation
-  return {
-    ingridient: addIngridient(errors)(recipe),
-    time: parseTime(errors)(recipe),
-    tag: addTag(errors)(recipe)(tags),
-    recipeUnsubscriber
-  }
-}
+export const schema = yup.object().shape({
+		title: yup.string().required('Please provide a title.'),
+		time: yup
+			.number()
+			.typeError('Time must be a number in minutes.')
+			.max(600, 'Are you sure this recipe will take that long?')
+			.required('Please provide the time in minutes.'),
+		method: yup.string().required('Cannot create a recipe without a method.'),
+		ingridients: yup
+			.array()
+			.of(ingridientSchema)
+			.min(1, 'Cannot create a recipe without ingridients.'),
+		tags: yup
+			.array()
+			.of(yup.string().required())
+			.min(1, 'No tags means this recipe cannot be found.')
+	});
