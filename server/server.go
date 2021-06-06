@@ -36,6 +36,7 @@ func Setup(repo Repo) *fiber.App {
 	// Create handler with repo
 	service := Service{repo: repo}
 
+	// Unauthorized Routes
 	router := app.Group("/api")
 	router.Get("/", service.matchTags)
 	router.Get("/tags", service.allTags)
@@ -46,6 +47,7 @@ func Setup(repo Repo) *fiber.App {
 		SigningKey: []byte(JWT_SECRET),
 	}))
 
+	// Authorized Routes
 	router.Post("/", service.addRecipe)
 
 	return app

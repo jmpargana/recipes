@@ -1,6 +1,7 @@
 package main
 
 import (
+	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -36,6 +37,13 @@ func (s *Service) addRecipe(c *fiber.Ctx) error {
 	if errors != nil {
 		return c.Status(400).JSON(errors)
 	}
+
+	// Extract UserID and UserName from JWT
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+
+	recipe.UserID = claims["_id"].(string)
+	recipe.UserEmail = claims["email"].(string)
 
 	if err := s.repo.Add(c, recipe); err != nil {
 		return c.Status(500).SendString(err.Error())

@@ -17,10 +17,14 @@ type ErrorResponse struct {
 }
 
 type Recipe struct {
-	Title       string        `validate:"required"`
-	Tags        []string      `validate:"required"`
-	Method      string        `validate:"required"`
-	Time        int           `validate:"required"`
+	UserID    string
+	UserEmail string
+	Title     string   `validate:"required"`
+	Tags      []string `validate:"required"`
+	Method    string   `validate:"required"`
+	Time      int      `validate:"required"`
+	// TODO: add in frontend
+	Public      bool
 	Ingridients []*Ingridient `validate:"required,dive,required"`
 }
 
