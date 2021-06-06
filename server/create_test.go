@@ -1,11 +1,19 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http/httptest"
 	"strings"
 	"testing"
 )
+
+type LoginResponse struct {
+	ID    string `json:"_id"`
+	Email string `json:"email"`
+	Token string `json:"token"`
+}
 
 func TestCreateInvalidRecipes(t *testing.T) {
 	tt := map[string]struct {
@@ -65,12 +73,38 @@ func TestCreateInvalidRecipes(t *testing.T) {
 		},
 	}
 
+	app := factory()
+
+	// Create User
+	user := `{"email":"failingUser@gmail.com", "password": "password"}`
+	rRegister := httptest.NewRequest("POST", "/api/users", strings.NewReader(user))
+	rRegister.Header.Set("Content-Type", "application/json")
+
+	resRegister, err := app.Test(rRegister)
+	if err != nil || resRegister.StatusCode != 201 {
+		t.Fatalf("Could not create user with. Status code: %d", resRegister.StatusCode)
+	}
+
+	// Login
+	rLogin := httptest.NewRequest("POST", "/api/users/login", strings.NewReader(user))
+	rLogin.Header.Set("Content-Type", "application/json")
+
+	resLogin, err := app.Test(rLogin)
+	if err != nil || resLogin.StatusCode != 200 {
+		t.Fatalf("Could not login with status %d", resLogin.StatusCode)
+	}
+
+	// Use JWT
+	var loginRes LoginResponse
+	if err := json.NewDecoder(resLogin.Body).Decode(&loginRes); err != nil {
+		t.Fatalf("Could not extract body from response with: %v", err)
+	}
+
 	for name, tc := range tt {
 		t.Run(name, func(t *testing.T) {
-			app := factory()
-
 			r := httptest.NewRequest("POST", "/api", strings.NewReader(tc.input))
 			r.Header.Set("Content-Type", "application/json")
+			r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", loginRes.Token))
 
 			res, err := app.Test(r)
 			if err != nil {
@@ -104,11 +138,39 @@ func TestCreateValidRecipes(t *testing.T) {
 		}`,
 	}
 
+	app := factory()
+
+	// Create User
+	user := `{"email":"passingUser@gmail.com", "password": "password"}`
+	rRegister := httptest.NewRequest("POST", "/api/users", strings.NewReader(user))
+	rRegister.Header.Set("Content-Type", "application/json")
+
+	resRegister, err := app.Test(rRegister)
+	if err != nil || resRegister.StatusCode != 201 {
+		t.Fatalf("Could not create user with. Status code: %d", resRegister.StatusCode)
+	}
+
+	// Login
+	rLogin := httptest.NewRequest("POST", "/api/users/login", strings.NewReader(user))
+	rLogin.Header.Set("Content-Type", "application/json")
+
+	resLogin, err := app.Test(rLogin)
+	if err != nil || resLogin.StatusCode != 200 {
+		t.Fatalf("Could not login with status %d", resLogin.StatusCode)
+	}
+
+	// Use JWT
+	var loginRes LoginResponse
+	if err := json.NewDecoder(resLogin.Body).Decode(&loginRes); err != nil {
+		t.Fatalf("Could not extract body from response with: %v", err)
+	}
+
 	for name, tc := range tt {
 		t.Run(name, func(t *testing.T) {
 			app := factory()
 			r := httptest.NewRequest("POST", "/api", strings.NewReader(tc))
 			r.Header.Set("Content-Type", "application/json")
+			r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", loginRes.Token))
 
 			res, err := app.Test(r)
 			if err != nil {

@@ -39,7 +39,7 @@ type TagQuery struct {
 }
 
 type User struct {
-	ID       string `json:",omitempty" bson:"_id"`
+	ID       string `json:",omitempty" bson:"_id,omitempty"`
 	Email    string `json:"email" binding:"required" bson:"email" validate:"required,email,min=6,max=32"`
 	Password string `json:"password" binding:"required" bson:"password" validate:"required,min=8,max=32"`
 }

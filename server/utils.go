@@ -45,6 +45,6 @@ func validateRecipe(r Recipe) []*ErrorResponse {
 }
 
 func checkPass(pass, hashedPass string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(pass), []byte(hashedPass))
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPass), []byte(pass))
 	return err == nil
 }

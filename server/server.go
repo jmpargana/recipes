@@ -37,7 +37,6 @@ func Setup(repo Repo) *fiber.App {
 	service := Service{repo: repo}
 
 	router := app.Group("/api")
-	router.Post("/", service.addRecipe)
 	router.Get("/", service.matchTags)
 	router.Get("/tags", service.allTags)
 	router.Post("/users", service.register)
@@ -46,6 +45,8 @@ func Setup(repo Repo) *fiber.App {
 	app.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte(JWT_SECRET),
 	}))
+
+	router.Post("/", service.addRecipe)
 
 	return app
 }

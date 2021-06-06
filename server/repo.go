@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -73,10 +75,14 @@ func (w DBWrapper) Register(c *fiber.Ctx, u *User) error {
 }
 
 func (w DBWrapper) FindUser(c *fiber.Ctx, email string) (*User, error) {
-	var user *User
+	var user User
 	collection := w.mg.Db.Collection("users")
-	if err := collection.FindOne(c.Context(), bson.D{{"email", email}}).Decode(user); err != nil {
+	result := collection.FindOne(c.Context(), bson.D{{"email", email}})
+
+	if err := result.Decode(&user); err != nil {
+		fmt.Println("Could not decode user.")
 		return nil, err
 	}
-	return user, nil
+
+	return &user, nil
 }
