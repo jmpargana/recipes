@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	jwtware "github.com/gofiber/jwt/v2"
 )
 
 func main() {
@@ -39,6 +40,12 @@ func Setup(repo Repo) *fiber.App {
 	router.Post("/", service.addRecipe)
 	router.Get("/", service.matchTags)
 	router.Get("/tags", service.allTags)
-	router.Post("/login", login)
+	router.Post("/users", service.register)
+
+	app.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte(JWT_SECRET),
+	}))
+
+	router.Post("/users/login", service.login)
 	return app
 }

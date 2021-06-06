@@ -1,11 +1,15 @@
 package main
 
 import (
-    "github.com/gofiber/fiber/v2"
+	"fmt"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type RepoMock struct {
-	recipes []*Recipe
+	recipes     []*Recipe
+	users       []*User
+	userCounter int
 }
 
 // Repeat implemented logic to test
@@ -35,24 +39,30 @@ func (r RepoMock) FindByTags(c *fiber.Ctx, t []string) ([]*Recipe, error) {
 }
 
 func contains(ss []string, s string) bool {
-    for _, a := range ss {
-        if a == s {
-            return true
-        }
-    }
-    return false
+	for _, a := range ss {
+		if a == s {
+			return true
+		}
+	}
+	return false
 }
 
 func matchTags(recipe, tags []string) bool {
 	for _, tag := range tags {
-            if !contains(recipe, tag) {
-                return false
-            }
+		if !contains(recipe, tag) {
+			return false
+		}
 	}
 	return true
 }
 
 func (r RepoMock) Add(c *fiber.Ctx, recipe *Recipe) error {
 	r.recipes = append(r.recipes, recipe)
+	return nil
+}
+
+func (r RepoMock) Register(c *fiber.Ctx, user *User) error {
+	r.userCounter += 1
+	r.users = append(r.users, &User{Email: user.Email, Password: user.Password, ID: fmt.Sprint(r.userCounter)})
 	return nil
 }

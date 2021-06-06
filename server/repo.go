@@ -63,3 +63,11 @@ func (w DBWrapper) Add(c *fiber.Ctx, r *Recipe) error {
 	}
 	return nil
 }
+
+func (w DBWrapper) Register(c *fiber.Ctx, u *User) error {
+	collection := w.mg.Db.Collection("users")
+	if _, err := collection.InsertOne(c.Context(), u); err != nil {
+		return err
+	}
+	return nil
+}

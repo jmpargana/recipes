@@ -39,13 +39,14 @@ type TagQuery struct {
 }
 
 type User struct {
-	ID       string `bson:"_id"`
-	Email    string `bson:"email"`
-	Password string `bson:"password"`
+	ID       string `json:",omitempty" bson:"_id"`
+	Email    string `json:"email" binding:"required" bson:"email" validate:"required,email,min=6,max=32"`
+	Password string `json:"password" binding:"required" bson:"password" validate:"required,min=8,max=32"`
 }
 
 type Repo interface {
 	FindTags(*fiber.Ctx) ([]string, error)
 	FindByTags(*fiber.Ctx, []string) ([]*Recipe, error)
 	Add(*fiber.Ctx, *Recipe) error
+	Register(*fiber.Ctx, *User) error
 }
