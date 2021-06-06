@@ -1,11 +1,11 @@
-import { writable } from 'svelte/store'
+import { writable } from 'svelte/store';
 
 function createStartAnimation() {
-  const { subscribe, set } = writable(false)
-  return {
-    subscribe,
-    start: () => set(true)
-  }
+	const { subscribe, set } = writable(false);
+	return {
+		subscribe,
+		start: () => set(true)
+	};
 }
 
-export const startAnimation = createStartAnimation()
+export const startAnimation = createStartAnimation();
