@@ -41,11 +41,11 @@ func Setup(repo Repo) *fiber.App {
 	router.Get("/", service.matchTags)
 	router.Get("/tags", service.allTags)
 	router.Post("/users", service.register)
+	router.Post("/users/login", service.login)
 
 	app.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte(JWT_SECRET),
 	}))
 
-	router.Post("/users/login", service.login)
 	return app
 }

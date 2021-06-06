@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +14,7 @@ type RepoMock struct {
 }
 
 // Repeat implemented logic to test
-func (r RepoMock) FindTags(c *fiber.Ctx) ([]string, error) {
+func (r *RepoMock) FindTags(c *fiber.Ctx) ([]string, error) {
 	check := map[string]struct{}{}
 	for _, recipe := range r.recipes {
 		for _, tag := range recipe.Tags {
@@ -28,7 +29,7 @@ func (r RepoMock) FindTags(c *fiber.Ctx) ([]string, error) {
 	return tags, nil
 }
 
-func (r RepoMock) FindByTags(c *fiber.Ctx, t []string) ([]*Recipe, error) {
+func (r *RepoMock) FindByTags(c *fiber.Ctx, t []string) ([]*Recipe, error) {
 	var recipes []*Recipe
 	for _, recipe := range r.recipes {
 		if matchTags(recipe.Tags, t) {
@@ -56,13 +57,27 @@ func matchTags(recipe, tags []string) bool {
 	return true
 }
 
-func (r RepoMock) Add(c *fiber.Ctx, recipe *Recipe) error {
+func (r *RepoMock) Add(c *fiber.Ctx, recipe *Recipe) error {
 	r.recipes = append(r.recipes, recipe)
 	return nil
 }
 
-func (r RepoMock) Register(c *fiber.Ctx, user *User) error {
+func (r *RepoMock) Register(c *fiber.Ctx, user *User) error {
 	r.userCounter += 1
+	for _, u := range r.users {
+		if u.Email == user.Email {
+			return errors.New("User already registered.")
+		}
+	}
 	r.users = append(r.users, &User{Email: user.Email, Password: user.Password, ID: fmt.Sprint(r.userCounter)})
 	return nil
+}
+
+func (r *RepoMock) FindUser(c *fiber.Ctx, email string) (*User, error) {
+	for _, u := range r.users {
+		if u.Email == email {
+			return u, nil
+		}
+	}
+	return nil, errors.New("User not found.")
 }

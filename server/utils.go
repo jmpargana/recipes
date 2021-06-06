@@ -1,6 +1,9 @@
 package main
 
-import "github.com/go-playground/validator"
+import (
+	"github.com/go-playground/validator"
+	"golang.org/x/crypto/bcrypt"
+)
 
 // TODO: abstract main validation to reuse with recipe
 func validateUser(u User) []*ErrorResponse {
@@ -39,4 +42,9 @@ func validateRecipe(r Recipe) []*ErrorResponse {
 		errors = append(errors, &ErrorResponse{FailedField: "Recipe.Ingridients", Value: "Need at least one Ingridient"})
 	}
 	return errors
+}
+
+func checkPass(pass, hashedPass string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(pass), []byte(hashedPass))
+	return err == nil
 }

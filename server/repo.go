@@ -71,3 +71,12 @@ func (w DBWrapper) Register(c *fiber.Ctx, u *User) error {
 	}
 	return nil
 }
+
+func (w DBWrapper) FindUser(c *fiber.Ctx, email string) (*User, error) {
+	var user *User
+	collection := w.mg.Db.Collection("users")
+	if err := collection.FindOne(c.Context(), bson.D{{"email", email}}).Decode(user); err != nil {
+		return nil, err
+	}
+	return user, nil
+}

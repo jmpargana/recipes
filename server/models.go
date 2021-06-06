@@ -47,6 +47,7 @@ type User struct {
 type Repo interface {
 	FindTags(*fiber.Ctx) ([]string, error)
 	FindByTags(*fiber.Ctx, []string) ([]*Recipe, error)
+	FindUser(*fiber.Ctx, string) (*User, error)
 	Add(*fiber.Ctx, *Recipe) error
 	Register(*fiber.Ctx, *User) error
 }
