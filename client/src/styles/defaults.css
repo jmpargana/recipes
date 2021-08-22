@@ -1,0 +1,93 @@
+/**
+ * Remove browser defaults
+ */
+html,
+body {
+	min-height: 100vh;
+	margin: 0;
+}
+
+*,
+:before,
+:after {
+	box-sizing: border-box;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	color: inherit;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+textarea {
+	padding: 0.5rem;
+	font-size: 1.2rem;
+}
+
+input {
+	outline: none;
+	border: none;
+	border-bottom: 1px solid var(--color-passed);
+	transform: translateY(20px);
+}
+
+input:focus {
+	border-color: var(--color-link);
+	border-width: 2px;
+}
+
+label,
+.label {
+	font-size: 1.1rem;
+	transform: translateY(-12px);
+	pointer-events: none;
+}
+
+input:focus {
+	border-color: var(--color-link);
+}
+
+input:focus ~ label {
+	color: var(--color-link);
+	animation: slide-up 0.2s forwards;
+}
+
+@keyframes slide-up {
+	to {
+		transform: translateY(-32px);
+	}
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+button,
+.btn {
+	appearance: none;
+	border: none;
+	border-radius: 0.5rem;
+	background-color: #000;
+	font-weight: 700;
+	color: #fff;
+	padding: 0.5rem 1.2rem;
+	z-index: 3;
+}
+
+button:hover,
+.btn:hover {
+	background: var(--color-hover);
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+
