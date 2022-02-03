@@ -1,54 +1,26 @@
 package main
 
 import (
-	"log"
-	"os"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	jwtware "github.com/gofiber/jwt/v2"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jmoiron/sqlx"
 )
 
-func main() {
-	dbName := os.Getenv("MONGO_DB")
-	mongoURI := os.Getenv("MONGO_URI")
-	mg, err := Connect(dbName, mongoURI)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	app := Setup(&DBWrapper{mg: *mg})
-
-	log.Fatal(app.Listen(":3000"))
+type Server struct {
+	db *sqlx.DB
 }
 
-// Pass MongoDB Instance as interface
-func Setup(repo Repo) *fiber.App {
-	app := fiber.New()
+func (s *Server) Setup() *chi.Mux {
+	r := chi.NewRouter()
 
-	// Serve static SPA
-	app.Static("/", "build")
+	r.Use(middleware.Logger)
 
-	app.Use(cors.New(cors.Config{
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
-	// Create handler with repo
-	service := Service{repo: repo}
-
-	// Unauthorized Routes
-	router := app.Group("/api")
-	router.Get("/", service.matchTags)
-	router.Get("/tags", service.allTags)
-	router.Post("/users", service.register)
-	router.Post("/users/login", service.login)
-
-	app.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte(JWT_SECRET),
-	}))
-
-	// Authorized Routes
-	router.Post("/", service.addRecipe)
-
-	return app
+	for _, route := range s.Routes() {
+		r.Method(route.method, route.path, ErrorHandler(route.fn))
+	}
+	r.Route("/recipes/{recipeID}", func(r chi.Router) {
+		r.Use(RecipeCtx)
+		r.Method("GET", "/", ErrorHandler(s.getRecipeByID))
+	})
+	return r
 }
