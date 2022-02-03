@@ -1,3 +1,0 @@
-#!/bin/sh
-
-sed -i "/\b\(jest\|test\|babel\|svelter\)\b/d" package.json
