@@ -1,5 +1,6 @@
 <script>
 	import TagInput from '../lib/tag-input.svelte';
+	import Input from '../lib/input.svelte'
 	import { newTags } from '../stores/tags';
 	import { goto } from '$app/navigation';
 
@@ -28,24 +29,22 @@
 </script>
 
 <form id="recipe" on:submit={handleSubmit}>
-	<label for="title">Title</label>
-	<input required id="title" type="text" name="title" />
-	<label for="method">Method</label>
-	<input required id="method" type="text" name="method" />
-
 	<div class="row">
-		<label for="time">Time</label>
-		<input required id="time" type="number" name="time" />
-		<TagInput />
+
+	<Input id="title" label="Title" />
+	<Input id="method" label="Method" />
 	</div>
+	<Input id="time" label="Time" />
+	<TagInput />
 
 	<input type="submit" />
 </form>
 
+
 <style>
 	#recipe {
-		display: flex;
-		flex-direction: column;
+		/* display: flex;
+		flex-direction: column; */
 	}
 
 	.row {
