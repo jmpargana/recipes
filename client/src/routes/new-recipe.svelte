@@ -29,25 +29,34 @@
 </script>
 
 <form id="recipe" on:submit={handleSubmit}>
-	<div class="row">
-
 	<Input id="title" label="Title" />
 	<Input id="method" label="Method" />
-	</div>
 	<Input id="time" label="Time" />
 	<TagInput />
-
-	<input type="submit" />
+	<input class="btn-submit" type="submit" />
 </form>
 
 
 <style>
-	#recipe {
-		/* display: flex;
-		flex-direction: column; */
-	}
+  .btn-submit {
+		margin-top: var(--space-lg);
+    cursor: pointer;
+    background-color: var(--color-secondary);
+    color: var(--color-bg-primary);
+    padding: var(--space-sm) var(--space-xxl);
+    border-radius: var(--space-xs);
+    transition: all 0.2s ease-in-out;
+  }
 
-	.row {
+  .btn-submit:hover {
+    background-color: var(--color-tertiary);
+    transform: scale(1.03);
+    color: var(--color-primary);
+  }
+
+	#recipe {
 		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
 	}
 </style>

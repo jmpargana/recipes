@@ -10,8 +10,33 @@
 </script>
 
 <div class="recipe-wrapper">
-	<h1>{recipe.title}</h1>
+	<h2>{recipe.title}</h2>
+	<div class="row">
 	<Chips chips={tags} />
-	<span><b>Time:</b>{recipe.time}</span>
-	<p><b>Method:</b>{recipe.method}</p>
+	<div class="col">
+
+	<h5><b>Time</h5>
+	<p>{recipe.time}</p>
+	</div>
+
+	</div>
+	<h5>Method</h5>
+	<p>{recipe.method}</p>
 </div>
+
+
+<style>
+	.recipe-wrapper {
+		gap: 1rem;
+	}
+
+	.row, .col, .recipe-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.col, .recipe-wrapper {
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+</style>

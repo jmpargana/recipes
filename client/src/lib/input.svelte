@@ -2,26 +2,24 @@
   let value
   export let id = "test"
   export let label = "Label"
-  // export let type = "text"
 </script>
 
 <div class="input-group">
-  <input {id} type="text" class="input-field" bind:value>
+  <input {id} type="text" class="input-field" bind:value on:keyup>
   <label class:selected={value} for={id} class="input-label">{label}</label>
 </div>
 
 <style>
 .input-group {
-  position: relative;
   width: 100%;
   margin-top: var(--space-md);
   padding: var(--space-xs);
+  position: relative;
 }
 
 .input-field {
-  width: auto;
+  width: calc(100% - 2 * var(--space-xs));
   border: none;
-  /* display: block; */
   border-bottom: 3px solid var(--color-text-primary);
   background: transparent;
   position: absolute;
@@ -36,9 +34,8 @@
   transition: all 0.1s ease-out;
   pointer-events: none;
   position: relative;
-  /* display: block; */
+  display: block;
   background: transparent;
-  top: -8px;
   top: calc(-1 * var(--space-xs));
   padding-left: var(--space-xs);
   padding-right: var(--space-xs);

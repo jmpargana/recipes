@@ -1,27 +1,52 @@
 <script>
 	import SearchBlock from '../lib/search-block.svelte';
 	import RecipeList from '../lib/recipe-list.svelte';
+	import Draw from '../lib/Draw.svelte'
 </script>
 
-
-<h1>Share Your Recipes</h1>
-<h2>Share Your Recipes</h2>
-<h3>Share Your Recipes</h3>
-<h4>Share Your Recipes</h4>
-<h5>Share Your Recipes</h5>
-<h6>Share Your Recipes</h6>
-<p>Share Your Recipes</p>
-
-<a href="/new-recipe">New Recipe</a>
-
+<h1 class="title">Share Your Recipes</h1>
+<Draw />
 <div class="homepage-container">
-	<!-- <SearchBlock /> -->
+	<SearchBlock />
 	<RecipeList />
 </div>
 
 <style>
+	.title {
+		z-index: 100;
+		position: absolute;
+		color: var(--color-primary);
+		overflow: hidden;
+	}
+
 	.homepage-container {
-		display: grid;
-		justify-content: center;
+		position: absolute;
+		inset: 0;
+		top: 280px;
+		z-index: 200;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-xl);
+	}
+
+	@media (min-width: 900px) {
+		.homepage-container {
+			top: 60%;
+		}
+	}
+
+	@media (min-width: 1500px) {
+		.title {
+			position: absolute;
+			top: 15%;
+			left: 10%;
+		}
+	}
+
+	@media (min-width: 1800px) {
+		.homepage-container {
+			top: 45%;
+		}
 	}
 </style>

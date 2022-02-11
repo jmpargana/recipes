@@ -26,5 +26,6 @@
 
 		display: var(--chips-display);
 		gap: var(--chips-gap);
+		flex-wrap: wrap;
 	}
 </style>

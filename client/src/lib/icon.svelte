@@ -16,5 +16,6 @@
 	.icon-wrapper {
 		display: grid;
 		place-items: center;
+		background-color: transparent;
 	}
 </style>

@@ -1,6 +1,8 @@
 <script>
 	import { newTags } from '../stores/tags';
 	import Chips from '../lib/chips.svelte';
+	import Input from '../lib/input.svelte'
+	import Button from '../lib/button.svelte'
 
 	function handleNewTag(e) {
 		e.preventDefault();
@@ -23,10 +25,22 @@
 
 <div class="tag-input-wrapper">
 	<div class="tag-input">
-		<label for="tags">Tags</label>
-		<input id="tags" name="tags" type="text" on:keyup={handleEnter} />
-		<button on:click={handleNewTag}>Add</button>
+		<Input id="tags" name="tags" type="text" on:keyup={handleEnter} />
+		<Button sm on:click={handleNewTag} label="Add"/>
 	</div>
-
 	<Chips chips={$newTags} on:close={cleanTag} closable />
 </div>
+
+
+<style>
+	.tag-input-wrapper {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.tag-input {
+		display: flex;
+	}
+</style>

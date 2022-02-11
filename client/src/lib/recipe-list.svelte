@@ -23,15 +23,20 @@
 
 <style>
 	.recipe-list {
-		width: 900px;
+		width: 90vw;
+		max-width: 900px;
 	}
 
 	.recipe-row {
 		position: relative;
-		margin-bottom: 2rem;
+		margin-bottom: var(--space-xxs);
+  	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+		padding: 2rem;
+		background-color: white;
+		border-radius: 20px;
 	}
 
-	.recipe-row::after {
+	/* .recipe-row::after {
 		--padding-x: 2rem;
 
 		content: '';
@@ -41,5 +46,5 @@
 		width: calc(100% - (2 * var(--padding-x)));
 		margin-top: 2rem;
 		margin-left: var(--padding-x);
-	}
+	} */
 </style>

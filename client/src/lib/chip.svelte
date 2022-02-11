@@ -6,6 +6,7 @@
 	export let chip = {};
 	export let closable;
 
+
 	function handleClick() {
 		dispatch('close', chip);
 	}
@@ -28,7 +29,7 @@
 		--chip-font-weight: normal;
 		--chip-bg-color: rgba(0, 0, 0, 0.12);
 		--chip-font-size: 14px;
-		--chip-text-color: rgba(0, 0, 0, 0.87);
+		--chip-text-color: var(--color-text-primary);
 		--chip-height: 32px;
 
 		padding-left: var(--chip-padding-horizontal);
@@ -55,6 +56,7 @@
 		position: relative;
 		flex-shrink: 1;
 		min-width: 0;
+		background-color: transparent;
 	}
 
 	.chip-delete {
@@ -64,9 +66,10 @@
 		cursor: pointer;
 		flex-shrink: 0;
 		background-repeat: no-repeat;
+		background-color: transparent;
 		width: 24px;
 		height: 24px;
-		color: black;
+		color: var(--color-text-primary);
 		opacity: 0.54;
 		position: relative;
 
