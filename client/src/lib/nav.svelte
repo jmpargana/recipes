@@ -1,9 +1,7 @@
-
 <div class="nav">
-
-<a href="/">Home</a>
-<a href="/new-recipe">New Recipe</a>
-<a href="/about">About</a>
+  <a href="#/">Home</a>
+  <a href="#/new-recipe">New Recipe</a>
+  <a href="#/about">About</a>
 </div>
 
 <style>
@@ -16,6 +14,5 @@
     gap: 1.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
-  }  
+  }
 </style>
-

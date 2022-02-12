@@ -1,10 +1,11 @@
 <script>
 	import SearchBlock from '../lib/search-block.svelte';
 	import RecipeList from '../lib/recipe-list.svelte';
-	import Draw from '../lib/Draw.svelte'
+	import Draw from '../lib/Draw.svelte';
+	import { fly } from 'svelte/transition';
 </script>
 
-<h1 class="title">Share Your Recipes</h1>
+<h1 class="title" transition:fly={{ duration: 1000, y: -100 }}>Share Your Recipes</h1>
 <Draw />
 <div class="homepage-container">
 	<SearchBlock />
