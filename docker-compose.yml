@@ -1,18 +1,30 @@
-version: "3"
+# Use postgres/example user/password credentials
+version: "3.7"
+
 services:
-  go:
-    environment:
-      - MONGO_DB=recipes
-      - MONGO_URI=mongodb://db:27017/recipes
-    restart: always
-    build: .
-    ports:
-      - 3000:3000
   db:
-    image: mongo
+    image: postgres
+    restart: always
     ports:
-      - 27017:27017
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
     volumes:
-      - mongodb:/data/db
+      - data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - db
+    links:
+      - "db:db"
+
 volumes:
-  mongodb:
+  data:

@@ -6,6 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
   "net/http"
   "strings"
+  "fmt"
 )
 
 type Server struct {
@@ -27,7 +28,9 @@ func (s *Server) Setup() *chi.Mux {
 
   // root, _ := filepath.Abs("../client/public")
   // fs := http.StripPrefix("/static/", http.FileServer(http.Dir(root)))
-  FileServer(r, "/", http.Dir("../client/public"))
+  FileServer(r, "/", http.Dir("public"))
+  // fs := http.FileServer(http.Dir("public"))
+  // r.Handle("/", http.StripPrefix("/static/*", http.StripPrefix("/static/", fs)))
 
 	return r
 }
@@ -35,6 +38,7 @@ func (s *Server) Setup() *chi.Mux {
 // FileServer conveniently sets up a http.FileServer handler to serve
 // static files from a http.FileSystem.
 func FileServer(r chi.Router, path string, root http.FileSystem) {
+  fmt.Println("Reached here!!!")
 	if strings.ContainsAny(path, "{}*") {
 		panic("FileServer does not permit any URL parameters.")
 	}
@@ -49,6 +53,7 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 		rctx := chi.RouteContext(r.Context())
 		pathPrefix := strings.TrimSuffix(rctx.RoutePattern(), "/*")
 		fs := http.StripPrefix(pathPrefix, http.FileServer(root))
+    fmt.Printf("got here with %v\n", fs)
 		fs.ServeHTTP(w, r)
 	})
 }
