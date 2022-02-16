@@ -32,6 +32,7 @@ func SetupDB() *sqlx.DB {
   }
 
   dbURI := fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+  fmt.Println(dbURI)
 
 
 	// dsn := fmt.Sprintf("host=")
