@@ -40,5 +40,5 @@ func main() {
 		db: db,
 	}
 	r := srv.Setup()
-	http.ListenAndServe(":3001", r)
+	http.ListenAndServe(":8080", r)
 }
