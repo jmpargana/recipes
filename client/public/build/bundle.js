@@ -9349,13 +9349,13 @@ var app = (function () {
     			h5.textContent = "Welcome to ShareYourRecipes!";
     			t3 = space();
     			p0 = element("p");
-    			p0.textContent = "I'll explain how this idea was born and what problems it solves.";
+    			p0.textContent = "I'll explain how the idea was born and what problems it solves.";
     			t5 = space();
     			p1 = element("p");
-    			p1.textContent = "Do you often eat unhealthy foods or spend money in with take away because you didn't plan what to cook ahead of time?";
+    			p1.textContent = "Do you often eat unhealthy foods or spend money in take away because you didn't plan what to cook ahead?";
     			t7 = space();
     			p2 = element("p");
-    			p2.textContent = "Even though I love to cook, I've certainly fallen into this habit. The reason is simply. Lack of organization. Both in deciding what to cook, as in having the ingridients at home.";
+    			p2.textContent = "Even though I love to cook, I've certainly fallen into this habit. The reason is simple. Lack of organization. Both in deciding what to cook, as in having the ingridients at home.";
     			t9 = space();
     			p3 = element("p");
     			p3.textContent = "With this app, you can store all of your favorite recipes and search for your cravings using tag-based search. Instead of categorizing your recipes by cuisine (italian, indian) or by dish (soup, starter, dessert), you can do both. Create all the tags you can think of to simplify the search.";
@@ -9381,21 +9381,21 @@ var app = (function () {
     			attr_dev(p0, "class", "svelte-2acqwl");
     			add_location(p0, file$8, 3, 0, 107);
     			attr_dev(p1, "class", "svelte-2acqwl");
-    			add_location(p1, file$8, 4, 0, 179);
+    			add_location(p1, file$8, 4, 0, 178);
     			attr_dev(p2, "class", "svelte-2acqwl");
-    			add_location(p2, file$8, 5, 0, 304);
+    			add_location(p2, file$8, 5, 0, 290);
     			attr_dev(p3, "class", "svelte-2acqwl");
-    			add_location(p3, file$8, 6, 0, 492);
-    			attr_dev(a, "href", "/new-recipe");
-    			add_location(a, file$8, 7, 89, 880);
+    			add_location(p3, file$8, 6, 0, 478);
+    			attr_dev(a, "href", "#/new-recipe");
+    			add_location(a, file$8, 7, 89, 866);
     			attr_dev(b0, "class", "svelte-2acqwl");
-    			add_location(b0, file$8, 7, 143, 934);
+    			add_location(b0, file$8, 7, 144, 921);
     			attr_dev(b1, "class", "svelte-2acqwl");
-    			add_location(b1, file$8, 7, 156, 947);
+    			add_location(b1, file$8, 7, 157, 934);
     			attr_dev(b2, "class", "svelte-2acqwl");
-    			add_location(b2, file$8, 7, 175, 966);
+    			add_location(b2, file$8, 7, 176, 953);
     			attr_dev(p4, "class", "svelte-2acqwl");
-    			add_location(p4, file$8, 7, 0, 791);
+    			add_location(p4, file$8, 7, 0, 777);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
