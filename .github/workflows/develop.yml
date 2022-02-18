@@ -1,37 +1,37 @@
-name: develop
-on: 
-  pull_request:
-  push:
-    branches:
-      - develop
-      - main
+# name: develop
+# on:
+#   pull_request:
+#   push:
+#     branches:
+#       - develop
+#       - main
 
-jobs:
-  test-backend:
-    strategy:
-      matrix:
-        go-version: [1.15.x, 1.16.x]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: ./server
-    steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.go-version }}
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Test
-      run: go get && go build && go test -v ./...
+# jobs:
+#   test-backend:
+#     strategy:
+#       matrix:
+#         go-version: [1.15.x, 1.16.x]
+#         os: [ubuntu-latest]
+#     runs-on: ${{ matrix.os }}
+#     defaults:
+#       run:
+#         working-directory: ./server
+#     steps:
+#     - name: Install Go
+#       uses: actions/setup-go@v2
+#       with:
+#         go-version: ${{ matrix.go-version }}
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#     - name: Test
+#       run: go get && go build && go test -v ./...
 
-  test-frontend:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./client
-    steps:
-    - uses: actions/checkout@v2
-    - run: npm ci && npm run build && npm run test
+#   test-frontend:
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         working-directory: ./client
+#     steps:
+#     - uses: actions/checkout@v2
+#     - run: npm ci && npm run build && npm run test
 
