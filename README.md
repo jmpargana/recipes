@@ -2,7 +2,7 @@
 
 Blaaaaazing fast webapp to store and search for recipes.
 
-[Demo](https://shareurrecipes.com)
+[Demo](http://shareurrecipes.com)
 
 ## Features
 
