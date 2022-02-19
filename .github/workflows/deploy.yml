@@ -17,4 +17,6 @@ jobs:
         ssh_host: ${{ secrets.SSH_HOST }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         ssh_user: ${{ secrets.SSH_USER }}
-    - run: docker ps
+    - run: docker-compose build
+    - run: docker-compose stop
+    - run: docker-compose up -d
